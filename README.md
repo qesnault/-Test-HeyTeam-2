@@ -1,4 +1,4 @@
-# test
+# Test technique 2 de HeyTeam
 
 ## Project setup
 ```
@@ -20,5 +20,7 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+---
+---
+
+L'objectif est de créer 2 listes d'item et d'être capable de faire des opérations simple de CRUD dessus et ceci, sans bugs.
