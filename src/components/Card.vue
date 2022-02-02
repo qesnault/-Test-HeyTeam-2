@@ -22,6 +22,9 @@ export default {
   watch: {
     savedColor: function () {
       this.$emit('colorChange', this.id, this.savedColor)
+    },
+    color: function () {
+      this.savedColor = this.color
     }
   },
   created() {
@@ -45,7 +48,7 @@ export default {
     border-radius: 10px;
     display: flex;
     justify-content: center;
-    align-items: end;
+    align-items: flex-end;
     animation: 0.3s appear;
     margin-bottom: 10px;
     width: 100%;

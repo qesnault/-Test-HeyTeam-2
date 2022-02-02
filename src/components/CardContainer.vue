@@ -1,9 +1,11 @@
 <template>
-  <div class="cardContainer relative">
-    <div class="addButton" v-on:click="addCard" :class="{activeButton : cards.length>=6}">+</div>
-    <div class="flex">
-        <component v-for="card in getCards" :is="card.component" :id="card.id" @onCloseCard="onCloseCard" :key="card.id" class="card-flex"
-                   @onSelect="changeStateCard(card)" :active="card.isActive" :color="card.color" @colorChange="changeColor"></component>
+  <div class = "cardContainer relative">
+    <div class = "addButton" v-on:click = "addCard" :class = "{activeButton : cards.length>=6}">+</div>
+    <div class = "flex">
+      <component v-for = "card in getCards" :is = "card.subCard.component" :id = "card.subCard.id" @onCloseCard = "onCloseCard"
+                 :key = "card.id" class = "card-flex"
+                 @onSelect = "changeStateCard(card)" :active = "card.isActive" :color = "card.subCard.color"
+                 @colorChange = "changeColor"></component>
     </div>
   </div>
 </template>
@@ -19,35 +21,38 @@ export default {
   },
   methods: {
     addCard() {
-      if(this.cards.length<6) {
-        this.cards.push({
+      if (this.cards.length < 6) {
+        let subCard = {
           id: Math.floor(Math.random() * Number.MAX_VALUE),
           component: Card,
-          isActive: false,
           color: 'blue'
+        }
+        this.cards.push({
+          isActive: false,
+          subCard: subCard
         })
       }
     },
     onCloseCard(value) {
       this.cards.forEach((item, key) => {
-        if(item.id===value) {
+        if (item.subCard.id === value) {
           this.cards.splice(key, 1)
         }
       })
     },
     changeStateCard(card) {
       this.$emit('onActive')
-      card.isActive=!card.isActive
+      card.isActive = !card.isActive
     },
     changeColor(value, color) {
       this.cards.forEach((item) => {
-        if(item.id===value) {
-          item.color = color
+        if (item.subCard.id === value) {
+          item.subCard.color = color
         }
       })
     }
   },
-  computed : {
+  computed: {
     getCards: function () {
       return this.cards
     }

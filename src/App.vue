@@ -39,20 +39,20 @@ export default {
   },
   methods: {
     disableAllActive: function () {
-      this.cardContainer1.forEach(item=>item.isActive=false)
-      this.cardContainer2.forEach(item=>item.isActive=false)
+      this.cardContainer1.forEach(item => item.isActive = false)
+      this.cardContainer2.forEach(item => item.isActive = false)
     },
     onMove: function () {
-      if(!this.isActiveCard) {
+      if (!this.isActiveCard) {
         return
       }
       let cardToMove = null
       let isInContainer1 = false
-      this.cardContainer1 = this.cardContainer1.filter(item=> {
-        if(!item.isActive) {
+      this.cardContainer1 = this.cardContainer1.filter(item => {
+        if (!item.isActive) {
           return true
         } else {
-          if(this.cardContainer2.length<6) {
+          if (this.cardContainer2.length < 6) {
             isInContainer1 = true
             cardToMove = item
           } else {
@@ -60,90 +60,87 @@ export default {
           }
         }
       })
-      this.cardContainer2 = this.cardContainer2.filter(item=> {
-        if(!item.isActive) {
+      this.cardContainer2 = this.cardContainer2.filter(item => {
+        if (!item.isActive) {
           return true
         } else {
-          if(this.cardContainer1.length<6) {
+          if (this.cardContainer1.length < 6) {
             cardToMove = item
           } else {
             return true
           }
         }
       })
-      if(isInContainer1) {
-        if(this.cardContainer2.length<6) {
+      if (isInContainer1) {
+        if (this.cardContainer2.length < 6) {
           this.cardContainer2.push(cardToMove)
         }
       } else {
-        if (this.cardContainer1.length<6) {
+        if (this.cardContainer1.length < 6) {
           this.cardContainer1.push(cardToMove)
         }
       }
     },
     onDelete: function () {
-      this.cardContainer1 = this.cardContainer1.filter(item=> {
+      this.cardContainer1 = this.cardContainer1.filter(item => {
         return !item.isActive
       })
-      this.cardContainer2 = this.cardContainer2.filter(item=> {
+      this.cardContainer2 = this.cardContainer2.filter(item => {
         return !item.isActive
       })
     },
     onCopy: function () {
-      this.cardContainer1.forEach(item=>{
-        if(item.isActive && this.cardContainer1.length<6) {
-          this.cardContainer1.push({
-            id: Math.floor(Math.random() * Number.MAX_VALUE),
-            component: Card,
-            isActive: false,
-            color: 'blue'
-          })
+      if (this.cardContainer1.length < 6) {
+        this.copyOnContainer(this.cardContainer1)
+      }
+      if (this.cardContainer2.length < 6) {
+        this.copyOnContainer(this.cardContainer2)
+      }
+    },
+    copyOnContainer(container) {
+      let theOne = container.find(a_card => a_card.isActive)
+
+      if (theOne !== undefined) {
+        let subCard = {
+          id: Math.floor(Math.random() * Number.MAX_VALUE),
+          component: Card,
+          color: theOne.subCard.color
         }
-      })
-      this.cardContainer2.forEach(item=>{
-        if(item.isActive && this.cardContainer2.length<6) {
-          this.cardContainer2.push({
-            id: Math.floor(Math.random() * Number.MAX_VALUE),
-            component: Card,
-            isActive: false,
-            color: 'blue'
-          })
-        }
-      })
+        container.push({
+
+          isActive: false,
+          subCard: subCard
+        })
+      }
     },
     onReference: function () {
-      this.cardContainer1.forEach(item=>{
-        if(item.isActive && this.cardContainer1.length<6) {
-          this.cardContainer1.push({
-            id: Math.floor(Math.random() * Number.MAX_VALUE),
-            component: Card,
-            isActive: false,
-            color: item.color
-          })
-        }
-      })
-      this.cardContainer2.forEach(item=>{
-        if(item.isActive && this.cardContainer2.length<6) {
-          this.cardContainer2.push({
-            id: Math.floor(Math.random() * Number.MAX_VALUE),
-            component: Card,
-            isActive: false,
-            color: item.color
-          })
-        }
-      })
+      if (this.cardContainer1.length < 6) {
+        this.referenceOnContainer(this.cardContainer1)
+      }
+      if (this.cardContainer2.length < 6) {
+        this.referenceOnContainer(this.cardContainer2)
+      }
+    },
+    referenceOnContainer(container) {
+      let theOne = container.find(a_card => a_card.isActive)
+      if (theOne !== undefined) {
+        container.push({
+          isActive: false,
+          subCard : theOne.subCard
+        })
+      }
     },
   },
   computed: {
     isActiveCard: function () {
       let isElActive = false
-      this.cardContainer1.forEach(item=>{
-        if(item.isActive){
+      this.cardContainer1.forEach(item => {
+        if (item.isActive) {
           isElActive = true
         }
       })
-      this.cardContainer2.forEach(item=>{
-        if(item.isActive){
+      this.cardContainer2.forEach(item => {
+        if (item.isActive) {
           isElActive = true
         }
       })
@@ -151,13 +148,13 @@ export default {
     },
     canCopy: function () {
       let canCopy = false
-      this.cardContainer1.forEach(item=>{
-        if(item.isActive && this.cardContainer1.length < 6){
+      this.cardContainer1.forEach(item => {
+        if (item.isActive && this.cardContainer1.length < 6) {
           canCopy = true
         }
       })
-      this.cardContainer2.forEach(item=>{
-        if(item.isActive && this.cardContainer2.length < 6){
+      this.cardContainer2.forEach(item => {
+        if (item.isActive && this.cardContainer2.length < 6) {
           canCopy = true
         }
       })
@@ -165,13 +162,13 @@ export default {
     },
     canMove: function () {
       let canCopy = false
-      this.cardContainer1.forEach(item=>{
-        if(item.isActive && this.cardContainer2.length < 6){
+      this.cardContainer1.forEach(item => {
+        if (item.isActive && this.cardContainer2.length < 6) {
           canCopy = true
         }
       })
-      this.cardContainer2.forEach(item=>{
-        if(item.isActive && this.cardContainer1.length < 6){
+      this.cardContainer2.forEach(item => {
+        if (item.isActive && this.cardContainer1.length < 6) {
           canCopy = true
         }
       })
